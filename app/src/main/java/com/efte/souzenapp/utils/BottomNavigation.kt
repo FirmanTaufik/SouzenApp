@@ -19,8 +19,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Home
+import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
@@ -44,7 +46,6 @@ import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.geometry.toRect
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PaintingStyle.Companion.Stroke
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.PathMeasure
@@ -55,12 +56,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.efte.souzenapp.ui.theme.PrimaryColor
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.hazeChild
 
 @Composable
 
-fun GlassmorphicBottomNavigation(hazeState: HazeState, onSelectIndex: (Int) -> Unit) {
+fun BottomNavigation(hazeState: HazeState, onSelectIndex: (BottomBarTab) -> Unit) {
     var selectedTabIndex by remember { mutableIntStateOf(1) }
     Box(
         modifier = Modifier
@@ -72,8 +74,8 @@ fun GlassmorphicBottomNavigation(hazeState: HazeState, onSelectIndex: (Int) -> U
                 width = Dp.Hairline,
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        Color.Black.copy(alpha = .8f),
-                        Color.Black.copy(alpha = .2f),
+                        PrimaryColor.copy(alpha = .8f),
+                        PrimaryColor.copy(alpha = .2f),
                     ),
                 ),
                 shape = CircleShape
@@ -84,7 +86,8 @@ fun GlassmorphicBottomNavigation(hazeState: HazeState, onSelectIndex: (Int) -> U
             selectedTab = selectedTabIndex,
             onTabSelected = {
                 selectedTabIndex = tabs.indexOf(it)
-                onSelectIndex(selectedTabIndex)
+                onSelectIndex(
+                    tabs[selectedTabIndex])
             }
         )
 
@@ -166,7 +169,7 @@ fun BottomBarTabs(
             fontSize = 12.sp,
             fontWeight = FontWeight.Medium,
         ),
-        LocalContentColor provides Color.Black
+        LocalContentColor provides PrimaryColor
     ) {
         Row(
             modifier = Modifier.fillMaxSize(),
@@ -207,28 +210,28 @@ fun BottomBarTabs(
     }
 }
 
-sealed class BottomBarTab(val title: String, val icon: ImageVector, val color: Color) {
-    object Profile : BottomBarTab(
-        title = "Profile",
-        icon = Icons.Rounded.Person,
-        color = Color.Red
+sealed class BottomBarTab(  val title: String, val icon: ImageVector, val color: Color= PrimaryColor) {
+    object Favorite : BottomBarTab(
+        title = "Favorite",
+        icon = Icons.Rounded.Star,
+        color = PrimaryColor
     )
 
     object Home : BottomBarTab(
         title = "Home",
         icon = Icons.Rounded.Home,
-        color = Color.Red
+        color = PrimaryColor
     )
 
-    object Settings : BottomBarTab(
-        title = "Settings",
-        icon = Icons.Rounded.Settings,
-        color = Color.Red
+    object About : BottomBarTab(
+        title = "About",
+        icon = Icons.Rounded.Info,
+        color = PrimaryColor
     )
 }
 
 val tabs = listOf(
-    BottomBarTab.Profile,
+    BottomBarTab.Favorite,
     BottomBarTab.Home,
-    BottomBarTab.Settings,
+    BottomBarTab.About,
 )
