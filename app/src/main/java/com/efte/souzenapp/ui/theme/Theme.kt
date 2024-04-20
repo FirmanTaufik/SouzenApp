@@ -3,6 +3,7 @@ package com.efte.souzenapp.ui.theme
 import android.app.Activity
 import android.os.Build
 import android.view.View
+import android.view.WindowManager
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -63,16 +64,21 @@ fun SouzenAppTheme(
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
-    val view = LocalView.current
+     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
-            setUpEdgeToEdge(view, darkTheme)
-           /* val window = (view.context as Activity).window
+            //setUpEdgeToEdge(view, darkTheme)
+            val window = (view.context as Activity).window
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+            )
+           /*val window = (view.context as Activity).window
             window.statusBarColor = if (darkTheme) BlackColor.toArgb() else WhiteColor.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme*/
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme */
         }
     }
-
+   // enableEdgeToEdge(statusBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT))
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,

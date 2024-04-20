@@ -69,6 +69,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation ("org.jsoup:jsoup:1.17.2")
     implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation ("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
     implementation("androidx.navigation:navigation-compose:2.5.0")
     implementation ("androidx.activity:activity-compose:1.5.0")
@@ -91,4 +92,11 @@ dependencies {
     implementation ("com.github.Kaaveh:sdp-compose:1.1.0")
     implementation("com.valentinilk.shimmer:compose-shimmer:1.3.0")
 
+
+    implementation("androidx.media3:media3-exoplayer:1.1.0") // [Required] androidx.media3 ExoPlayer dependency
+    implementation("androidx.media3:media3-session:1.1.0") // [Required] MediaSession Extension dependency
+    implementation("androidx.media3:media3-ui:1.1.0") // [Required] Base Player UI
+    implementation("androidx.media3:media3-exoplayer-dash:1.1.0") // [Optional] If your media item is DASH
+    implementation("androidx.media3:media3-exoplayer-hls:1.1.0") // [Optional] If your media item is HLS (m3u8..)
+    implementation("androidx.media3:media3-exoplayer-smoothstreaming:1.1.0") // [Optional] If your media item is smoothStreaming
 }

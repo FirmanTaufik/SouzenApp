@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -55,6 +56,7 @@ import androidx.navigation.NavHostController
 import com.efte.souzenapp.Greeting
 import com.efte.souzenapp.R
 import com.efte.souzenapp.core.UIState
+import com.efte.souzenapp.route.ScreenRoute
 import com.efte.souzenapp.ui.theme.BlackColor
 import com.efte.souzenapp.ui.theme.PrimaryColor
 import com.efte.souzenapp.ui.theme.ShimmerColor
@@ -64,9 +66,13 @@ import com.valentinilk.shimmer.shimmer
 import ir.kaaveh.sdpcompose.sdp
 
 @Composable
-fun HomeScreen(navHostController: NavHostController, homeViewModel: HomeVM, isScrolling : (Boolean)->Unit) {
+fun HomeScreen(
+    navHostController: NavHostController,
+    homeViewModel: HomeVM,
+    isScrolling: (Boolean) -> Unit
+) {
     val listState = rememberLazyListState()
-    isScrolling(  listState.isScrollingUp())
+    isScrolling(listState.isScrollingUp())
     val state by homeViewModel.homeState.collectAsState()
     when (state) {
         is UIState.OnLoading -> {
@@ -77,8 +83,13 @@ fun HomeScreen(navHostController: NavHostController, homeViewModel: HomeVM, isSc
                 state = listState,
                 userScrollEnabled = true
             ) {
+                item { Spacer(modifier = Modifier.height(30.dp)) }
                 item { HeaderContent(true) }
-                item { LatestContent(true) }
+                item {
+                    LatestContent(true) {
+                        navHostController.navigate(ScreenRoute.DetailAnime.route)
+                    }
+                }
                 item { MovieContent(true) }
             }
         }
@@ -99,8 +110,14 @@ fun HomeScreen(navHostController: NavHostController, homeViewModel: HomeVM, isSc
                     .fillMaxSize()
                     .padding(horizontal = 10.dp)
             ) {
+                item { Spacer(modifier = Modifier.height(30.dp)) }
                 item { HeaderContent(false) }
-                item { LatestContent(false) }
+                item {
+                    LatestContent(true) {
+                        navHostController.navigate(ScreenRoute.DetailAnime.route)
+                    }
+
+                }
             }
         }
 
@@ -111,8 +128,13 @@ fun HomeScreen(navHostController: NavHostController, homeViewModel: HomeVM, isSc
                     .padding(horizontal = 10.dp),
                 state = listState,
             ) {
+                item { Spacer(modifier = Modifier.height(30.dp)) }
                 item { HeaderContent(true) }
-                item { LatestContent(true) }
+                item {
+                    LatestContent(true) {
+                        navHostController.navigate(ScreenRoute.DetailAnime.route)
+                    }
+                }
                 item { MovieContent(true) }
             }
         }
@@ -158,87 +180,89 @@ private fun MovieContent(isLoading: Boolean) {
         Spacer(modifier = Modifier.height(10.dp))
         LazyRow(modifier = Modifier.fillMaxWidth()) {
             repeat(10) {
-               item {  Box(
-                   modifier = Modifier
-                       .wrapContentHeight()
-                       .padding(horizontal = 5.dp)
-               ) {
-                   Card(
-                       modifier = Modifier
-                           .width(230.sdp)
-                           .shimmer()
-                           .height(150.sdp),
-                       shape = RoundedCornerShape(15),
+                item {
+                    Box(
+                        modifier = Modifier
+                            .wrapContentHeight()
+                            .padding(horizontal = 5.dp)
+                    ) {
+                        Card(
+                            modifier = Modifier
+                                .width(230.sdp)
+                                .shimmer()
+                                .height(150.sdp),
+                            shape = RoundedCornerShape(15),
 
-                       ) {
-                       Row(
-                           modifier = Modifier
-                               .fillMaxSize()
-                               .padding(15.dp)
-                       ) {
-                           Box(
-                               modifier = Modifier
-                                   .fillMaxHeight()
-                                   .width(100.sdp)
-                                   .background(
-                                       color = ShimmerColor,
-                                       shape = RoundedCornerShape(15)
-                                   )
-                           ) {
-                           }
-                           Spacer(modifier = Modifier.width(10.dp))
-                           Column(
-                               modifier = Modifier
-                                   .weight(1f)
-                                   .fillMaxHeight()
-                           ) {
+                            ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(15.dp)
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxHeight()
+                                        .width(100.sdp)
+                                        .background(
+                                            color = ShimmerColor,
+                                            shape = RoundedCornerShape(15)
+                                        )
+                                ) {
+                                }
+                                Spacer(modifier = Modifier.width(10.dp))
+                                Column(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .fillMaxHeight()
+                                ) {
 
-                               Text(
-                                   text = "",
-                                   modifier = Modifier
-                                       .fillMaxWidth()
-                                       .height(25.sdp)
-                                       .background(
-                                           color = ShimmerColor,
-                                           shape = RoundedCornerShape(15)
-                                       ),
-                               )
-                               Spacer(modifier = Modifier.height(10.dp))
-                               Text(
-                                   text = "",
-                                   modifier = Modifier
-                                       .width(60.sdp)
-                                       .height(25.sdp)
-                                       .background(
-                                           color = ShimmerColor,
-                                           shape = RoundedCornerShape(15)
-                                       ),
-                               )
-                               Spacer(modifier = Modifier.height(10.dp))
-                               repeat(3) {
-                                   Spacer(modifier = Modifier.height(5.dp))
-                                   Text(
-                                       text = "",
-                                       modifier = Modifier
-                                           .fillMaxWidth()
-                                           .height(15.sdp)
-                                           .background(
-                                               color = ShimmerColor,
-                                               shape = RoundedCornerShape(15)
-                                           ),
-                                   )
-                               }
-                           }
-                       }
-                   }
-               } }
+                                    Text(
+                                        text = "",
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(25.sdp)
+                                            .background(
+                                                color = ShimmerColor,
+                                                shape = RoundedCornerShape(15)
+                                            ),
+                                    )
+                                    Spacer(modifier = Modifier.height(10.dp))
+                                    Text(
+                                        text = "",
+                                        modifier = Modifier
+                                            .width(60.sdp)
+                                            .height(25.sdp)
+                                            .background(
+                                                color = ShimmerColor,
+                                                shape = RoundedCornerShape(15)
+                                            ),
+                                    )
+                                    Spacer(modifier = Modifier.height(10.dp))
+                                    repeat(3) {
+                                        Spacer(modifier = Modifier.height(5.dp))
+                                        Text(
+                                            text = "",
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .height(15.sdp)
+                                                .background(
+                                                    color = ShimmerColor,
+                                                    shape = RoundedCornerShape(15)
+                                                ),
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 }
 
 @Composable
-private fun LatestContent(isLoading: Boolean) {
+private fun LatestContent(isLoading: Boolean, onClick: () -> Unit) {
     val shimmerInstance = rememberShimmer(shimmerBounds = ShimmerBounds.Window)
 
     Column(modifier = Modifier.wrapContentHeight()) {
@@ -258,7 +282,7 @@ private fun LatestContent(isLoading: Boolean) {
                 text = "Episode Update",
                 color = PrimaryColor,
                 fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
+                fontSize = 20.sp,
             )
             IconButton(onClick = { /*TODO*/ }) {
                 Icon(
@@ -276,6 +300,9 @@ private fun LatestContent(isLoading: Boolean) {
                         Column(
                             modifier = Modifier
                                 .width(100.sdp)
+                                .clickable {
+                                    onClick()
+                                }
                                 .padding(horizontal = 5.dp)
                                 .shimmer(shimmerInstance)
                         ) {
@@ -285,10 +312,12 @@ private fun LatestContent(isLoading: Boolean) {
                                     .height(130.sdp)
                                     .clip(shape = RoundedCornerShape(15))
                             ) {
-                                Box (modifier = Modifier
-                                    .padding(10.dp)
-                                    .fillMaxSize(),
-                                    contentAlignment = Alignment.TopEnd){
+                                Box(
+                                    modifier = Modifier
+                                        .padding(10.dp)
+                                        .fillMaxSize(),
+                                    contentAlignment = Alignment.TopEnd
+                                ) {
                                     Box(
                                         modifier = Modifier
                                             .width(40.sdp)
@@ -351,6 +380,7 @@ private fun HeaderContent(isLoading: Boolean) {
                     .fillMaxSize()
                     .padding(15.dp)
             ) {
+                Spacer(modifier = Modifier.height(30.dp))
                 Box(modifier = Modifier.weight(1f))
                 Text(
                     text = "",

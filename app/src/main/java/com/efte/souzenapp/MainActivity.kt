@@ -28,18 +28,24 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.efte.souzenapp.core.UIState
 import com.efte.souzenapp.presentation.about.AboutScreen
+import com.efte.souzenapp.presentation.detail.DetailScreen
 import com.efte.souzenapp.presentation.favorite.FavoriteScreen
 import com.efte.souzenapp.presentation.home.HomeScreen
 import com.efte.souzenapp.presentation.home.HomeVM
+import com.efte.souzenapp.presentation.watch.WatchScreen
+import com.efte.souzenapp.route.ScreenRoute
 import com.efte.souzenapp.ui.theme.SouzenAppTheme
 import com.efte.souzenapp.utils.BottomBarTab
 import com.efte.souzenapp.utils.BottomNavigation
+import com.efte.souzenapp.utils.tabs
 import dev.chrisbanes.haze.HazeState
 
 class MainActivity : ComponentActivity() {
@@ -71,6 +77,13 @@ class MainActivity : ComponentActivity() {
 
                         }
                     ) {
+
+                        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+                            println("addOnDes ${destination.route}")
+                            val list = tabs.map {  title }
+                            isShowBottomBar = destination.route in list
+                        }
+
                         Box(
                             modifier = Modifier
                                 .padding(it)
@@ -81,6 +94,7 @@ class MainActivity : ComponentActivity() {
                                 navController = navController,
                                 startDestination = BottomBarTab.Home.title
                             ) {
+
                                 composable(BottomBarTab.Home.title) {
                                     LaunchedEffect(key1 = true) {
                                        /* if (homeViewModel.homeState.value !is UIState.OnSuccess<*>) {
@@ -101,6 +115,14 @@ class MainActivity : ComponentActivity() {
 
                                 composable(BottomBarTab.Favorite.title) {
                                     FavoriteScreen()
+                                }
+
+                                composable(ScreenRoute.DetailAnime.route){
+                                    isShowBottomBar =false
+                                    DetailScreen(navController)
+                                }
+                                composable(ScreenRoute.WatchAnime.route) {
+                                    WatchScreen()
                                 }
 
                             }

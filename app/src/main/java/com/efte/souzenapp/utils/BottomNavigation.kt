@@ -82,12 +82,13 @@ fun BottomNavigation(hazeState: HazeState, onSelectIndex: (BottomBarTab) -> Unit
             )
     ) {
         BottomBarTabs(
-            tabs,
+            tabs.toList(),
             selectedTab = selectedTabIndex,
             onTabSelected = {
                 selectedTabIndex = tabs.indexOf(it)
                 onSelectIndex(
-                    tabs[selectedTabIndex])
+                    tabs[selectedTabIndex]
+                )
             }
         )
 
@@ -210,7 +211,11 @@ fun BottomBarTabs(
     }
 }
 
-sealed class BottomBarTab(  val title: String, val icon: ImageVector, val color: Color= PrimaryColor) {
+sealed class BottomBarTab(
+    val title: String,
+    val icon: ImageVector,
+    val color: Color = PrimaryColor
+) {
     object Favorite : BottomBarTab(
         title = "Favorite",
         icon = Icons.Rounded.Star,
@@ -230,7 +235,7 @@ sealed class BottomBarTab(  val title: String, val icon: ImageVector, val color:
     )
 }
 
-val tabs = listOf(
+val tabs = arrayOf(
     BottomBarTab.Favorite,
     BottomBarTab.Home,
     BottomBarTab.About,
